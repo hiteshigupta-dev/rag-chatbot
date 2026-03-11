@@ -50,13 +50,10 @@ MAX_CONTEXT_CHUNKS = 3  # Max chunks sent to LLM (reduces context size and laten
 # LLM settings
 try:
     import streamlit as st
-    GEMINI_API_KEY = st.secrets.get("GEMINI_API_KEY") or os.getenv("GEMINI_API_KEY")
-except ModuleNotFoundError:
-    GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
-
-if not GEMINI_API_KEY:
-    raise ValueError("GEMINI_API_KEY is not set! Use .env locally or Streamlit Secrets on cloud.")
-
+    GEMINI_API_KEY = st.secrets.get("GEMINI_API_KEY", os.getenv("GEMINI_API_KEY", ""))
+except Exception:
+    GEMINI_API_KEY = os.getenv("GEMINI_API_KEY", "")
+    
 GEMINI_MODEL_NAME = "gemini-2.5-flash"
 DEFAULT_LLM_TEMPERATURE = 0.2  # Low for deterministic FAQ-style answers
 DEFAULT_LLM_MAX_TOKENS = 768  # Enough for full FAQ answers (contact info, steps, etc.)
